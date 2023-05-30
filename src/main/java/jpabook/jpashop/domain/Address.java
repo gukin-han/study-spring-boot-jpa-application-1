@@ -10,14 +10,14 @@ public class Address {
 
     String city;
     String street;
-    String zipCode;
+    String zipcode;
 
     protected Address() {
     }
 
-    public Address(String city, String street, String zipCode) {
+    public Address(String city, String street, String zipcode) {
         this.city = city;
         this.street = street;
-        this.zipCode = zipCode;
+        this.zipcode = zipcode;
     }
 }
