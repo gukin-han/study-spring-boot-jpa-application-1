@@ -17,14 +17,22 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // EAGER의 경우 Order를 조회할때 member(FK)도 같이 조인해서 가져온다
     @JoinColumn(name = "member_id") // 실제 컬럼 명 == FK 이름
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    // without Cascade
+    // persist(orderItemA)
+    // persist(orderItemB)
+    // persist(orderItemC)
+
+    // with Cascade
+    // persist(order)
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
@@ -35,5 +43,21 @@ public class Order {
 
     enum Status {
         ORDER, CANCEL
+    }
+
+    // 연관관계 메서드
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
     }
 }

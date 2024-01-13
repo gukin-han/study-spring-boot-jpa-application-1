@@ -21,5 +21,5 @@ public class Member {
     private Address address;
 
     @OneToMany(mappedBy = "member") // Order 테이블의 member 필드에 매핑된것 == 읽기 전용
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>(); //  컬렉션은 필드에서 초기화하자
 }
