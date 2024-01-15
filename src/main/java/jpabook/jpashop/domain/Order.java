@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jpabook.jpashop.domain.Delivery.Status.*;
+import static jpabook.jpashop.domain.Order.Status.*;
+
 @Entity
 @Table(name = "orders")
 @Getter @Setter
@@ -59,5 +62,41 @@ public class Order {
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
+    }
+
+    // 생성 메서드
+    public static Order createOrder(Member member,
+                                    Delivery delivery,
+                                    OrderItem... orderItems) {
+
+        final Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+
+        order.setStatus(ORDER);
+        order.setOrderDate(LocalDateTime.now());
+
+        return order;
+    }
+
+    // 비즈니스 로직
+    // 주문 취소
+    public void cancel() {
+        if (delivery.getStatus() == COMPLETE) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다");
+        }
+
+        this.setStatus(CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    public int getTotalPrice() {
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 }
