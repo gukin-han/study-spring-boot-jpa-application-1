@@ -47,7 +47,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status;  // 주문상태 [ORDER, CANCEL]
 
-    enum Status {
+    public enum Status {
         ORDER, CANCEL
     }
 
