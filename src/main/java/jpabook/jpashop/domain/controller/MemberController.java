@@ -46,4 +46,6 @@ public class MemberController {
         model.addAttribute("members", memberService.findMembers());
         return "members/memberList";
     }
+
+
 }
