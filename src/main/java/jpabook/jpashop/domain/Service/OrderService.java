@@ -26,7 +26,7 @@ public class OrderService {
     // 주문
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {
-        // 엔티티 조회
+        // 엔티티 조회: 이곳에서 조회를 하면 더욱 유용하다
         final Member member = memberRepository.findOne(memberId);
         final Item item = itemRepository.findOne(itemId);
 
