@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jpabook.jpashop.domain.Delivery.Status.*;
-import static jpabook.jpashop.domain.Order.Status.*;
+import static jpabook.jpashop.domain.OrderStatus.CANCEL;
+import static jpabook.jpashop.domain.OrderStatus.ORDER;
 
 @Entity
 @Table(name = "orders")
@@ -45,11 +46,7 @@ public class Order {
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    private Status status;  // 주문상태 [ORDER, CANCEL]
-
-    public enum Status {
-        ORDER, CANCEL
-    }
+    private OrderStatus status;  // 주문상태 [ORDER, CANCEL]
 
     // 연관관계 메서드
     public void setMember(Member member) {

@@ -1,14 +1,17 @@
 package jpabook.jpashop.domain.controller;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.Service.ItemService;
 import jpabook.jpashop.domain.Service.MemberService;
 import jpabook.jpashop.domain.Service.OrderService;
 import jpabook.jpashop.domain.item.Item;
+import jpabook.jpashop.domain.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,5 +43,13 @@ public class OrderController {
 
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
+    }
+
+    @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+        final List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+
+        return "order/orderList";
     }
 }
